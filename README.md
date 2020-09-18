@@ -1,3 +1,7 @@
+## Prereqs
+
+- rsyslog
+
 ```
 docker-compose up -d
 ```
