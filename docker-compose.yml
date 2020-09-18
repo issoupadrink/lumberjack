@@ -1,0 +1,34 @@
+version: '3'
+services:
+  telegraf:
+    image: telegraf
+    volumes:
+      - ./telegraf.conf:/etc/telegraf/telegraf.conf
+    ports:
+    - 8186:8186
+  influxdb:
+    image: influxdb:latest
+    volumes:
+      # Mount for influxdb data directory
+      - ./influxdb/data:/var/lib/influxdb
+      # Mount for influxdb configuration
+      - ./influxdb/config/:/etc/influxdb/
+    ports:
+      # The API for InfluxDB is served on port 8086
+      - "8086:8086"
+      - "8082:8082"
+  chronograf:
+    image: chronograf:latest
+    volumes:
+      # Mount for chronograf database
+      - ./chronograf/data/:/var/lib/chronograf/
+    ports:
+      # The WebUI for Chronograf is served on port 8888
+      - "8888:8888"
+    depends_on:
+      - influxdb
+    command: ["chronograf", "--influxdb-url=http://influxdb:8086"]
+  kapacitor:
+    image: kapacitor:latest
+    environment:
+    - KAPACITOR_INFLUXDB_0_URLS_0=http://influxdb:8086
