@@ -4,4 +4,4 @@ A docker cluster to store and visualise system metrics and logs in a time series
 
 You will need to download `rsyslog` to poll `syslogs`, if you wish to do this. 
 
-![Image of Chronograf Dashboard](https://github.com/issoupadrink/lumberjack/blob/master/dashboard_example.png)
+![Image of Chronograf Dashboard](https://raw.githubusercontent.com/issoupadrink/lumberjack/master/dashboard_example.png)
