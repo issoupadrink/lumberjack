@@ -4,8 +4,17 @@ services:
     image: telegraf
     volumes:
       - ./telegraf.conf:/etc/telegraf/telegraf.conf
+      - /:/hostfs:ro 
     ports:
     - 8186:8186
+    environment: 
+      - HOST_ETC=/hostfs/etc
+      - HOST_PROC=/hostfs/proc 
+      - HOST_SYS=/hostfs/sys
+      - HOST_VAR=/hostfs/var
+      - HOST_RUN=/hostfs/run
+      - HOST_MOUNT_PREFIX=/hostfs
+
   influxdb:
     image: influxdb:latest
     volumes:
@@ -17,6 +26,7 @@ services:
       # The API for InfluxDB is served on port 8086
       - "8086:8086"
       - "8082:8082"
+
   chronograf:
     image: chronograf:latest
     volumes:
@@ -28,6 +38,7 @@ services:
     depends_on:
       - influxdb
     command: ["chronograf", "--influxdb-url=http://influxdb:8086"]
+
   kapacitor:
     image: kapacitor:latest
     environment:
